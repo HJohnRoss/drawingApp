@@ -8,7 +8,6 @@ let cursorPosition = { x: null, y: null}
 
 const handleMoveable = (event) => {
   if(event.clientX  > 100 && event.clientX < window.innerWidth - 100) {
-    console.log(window.innerWidth, event.clientX)
     palletSection.style.left = `${event.clientX - 70}px`
   }
   if(event.clientY > 30 && event.clientY < window.innerHeight - 630) {
