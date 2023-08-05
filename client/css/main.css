@@ -4,7 +4,7 @@
   position: absolute;
   top: 15rem;
   right: 3rem;
-  border-radius-bottom: ;
+  z-index: 100000;
 }
 
 .drawPallet__moveable {
