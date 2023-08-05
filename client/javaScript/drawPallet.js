@@ -7,9 +7,11 @@ let cursorPosition = { x: null, y: null}
 // palletSection.appendChild(document.createElement("div"));
 
 const handleMoveable = (event) => {
-  let styling = palletSection.style
-  cursorPosition = { x: event.clientX, y: event.clientY }
-
-  styling.top = `${cursorPosition.y - 20}px`
-  styling.left = `${cursorPosition.x - 70}px`
+  if(event.clientX  > 100 && event.clientX < window.innerWidth - 100) {
+    console.log(window.innerWidth, event.clientX)
+    palletSection.style.left = `${event.clientX - 70}px`
+  }
+  if(event.clientY > 30 && event.clientY < window.innerHeight - 630) {
+    palletSection.style.top = `${event.clientY - 20}px`
+  }
 }
