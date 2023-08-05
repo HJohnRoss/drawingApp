@@ -1,0 +1,29 @@
+#drawPallet {
+  width: 15rem;
+  height: 70vh;
+  position: absolute;
+  top: 15rem;
+  right: 3rem;
+  border-radius-bottom: ;
+}
+
+.drawPallet__moveable {
+  background-color: #d3d3d3;
+  width: 15rem;
+  height: 3.5vh;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px 20px 0 0;
+  align-items: center;
+}
+
+.drawPallet__moveable--svg {
+  height: 4rem;
+}
+
+.drawPallet__stencils {
+  background-color: #d3d3d3;
+  height: 65vh;
+  border-radius: 0 0 20px 20px;
+  width: 15rem;
+}
