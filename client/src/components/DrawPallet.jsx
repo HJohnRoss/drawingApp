@@ -1,24 +1,22 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 
 const DrawPallet = () => {
   const palletRef = useRef(null);
-  const [pallet, setPallet] = useState();
-
-  useEffect(() => {
-    setPallet(palletRef.current);
-    if(!pallet) {
-      return;
-    }
-  }, [pallet])
-
+  
   const handleMoveable = (Event) => {
     if (Event.clientX > 100 && Event.clientX < window.innerWidth - 100) {
-      pallet.style.left = `${Event.clientX - 70}px`
+      palletRef.current.style.left = `${Event.clientX - 70}px`
     }
     if (Event.clientY > 30 && Event.clientY < window.innerHeight - 630) {
-      pallet.style.top = `${Event.clientY - 20}px`
+      palletRef.current.style.top = `${Event.clientY - 20}px`
     }
   }
+  
+  window.addEventListener('resize', function () {
+    if(palletRef.current) {
+      palletRef.current.style.left = `${window.innerWidth - 180}px`
+    }
+  })
 
   return (
     <section id="drawPallet" ref={palletRef}>
