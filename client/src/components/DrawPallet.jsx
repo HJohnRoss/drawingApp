@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 const DrawPallet = () => {
   const palletRef = useRef(null);
-  
+
   const handleMoveable = (Event) => {
     if (Event.clientX > 100 && Event.clientX < window.innerWidth - 100) {
       palletRef.current.style.left = `${Event.clientX - 70}px`
@@ -11,12 +11,26 @@ const DrawPallet = () => {
       palletRef.current.style.top = `${Event.clientY - 20}px`
     }
   }
-  
+
   window.addEventListener('resize', function () {
-    if(palletRef.current) {
+    if (palletRef.current) {
       palletRef.current.style.left = `${window.innerWidth - 180}px`
     }
   })
+
+
+  const buttons = [
+    { name: "Undo" },
+    { name: "Clear" },
+    { name: "red", color: "red" },
+    { name: "blue", color: "blue" },
+    { name: "green", color: "green" },
+    { name: "yellow", color: "yellow" }
+  ];
+
+  const handleBtn = () => {
+
+  }
 
   return (
     <section id="drawPallet" ref={palletRef}>
@@ -27,11 +41,17 @@ const DrawPallet = () => {
 
       </div>
       <div className="drawPallet__stencils">
-        <button>hello</button>
-        <button>there</button>
-        <button>good</button>
-        <button>friend</button>
-        <button>ciaran</button>
+        {
+          buttons.map((btn, i) =>
+            <button key={i} onClick={() => handleBtn()} className={btn.color ? "drawPallet--color" : "drawPallet--btn"} style={btn.color ? { backgroundColor: btn.color, height: '30px', width: '30px' } : {}}>
+              {btn.color ? "" : btn.name}
+            </button>
+          )
+        }
+        <input type="color" id="colorPicker"></input>
+        {/* // <button onClick={handleBtn()} key={i} className={btn.color ? "drawPallet--color" : "drawPallet--btn"} style={btn.color ? { background: btn.color}: ""}>1
+        //   {btn.color ? "" : btn.name}
+        // </button> */}
       </div>
     </section>
   )
