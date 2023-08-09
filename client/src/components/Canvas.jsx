@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 
-const Canvas = () => {
+const Canvas = ({ drawing, points, pathsry, ctx, setCtx}) => {
   const canvasRef = useRef();
   const [canvas, setCanvas] = useState();
-  const [ctx, setCtx] = useState()
+  
 
   useEffect(() => {
     setCanvas(canvasRef.current)
@@ -33,9 +34,6 @@ const Canvas = () => {
     }
   }
 
-  let is_drawing = false
-  let drawWidth = 5
-  let drawColor = "black"
 
   function loadCanvas() {
     // all of the preloaded objects in the canvas
@@ -46,38 +44,50 @@ const Canvas = () => {
     }
   }
 
-  if(canvasRef.current) {
+  if (canvasRef.current) {
     canvas.addEventListener("touchstart", start)
     canvas.addEventListener("mousedown", start)
+
     canvas.addEventListener("mousemove", draw)
     canvas.addEventListener("touchmove", draw)
-    canvas.addEventListener("mouseup", () => is_drawing = false)
-    canvas.addEventListener("mouseout", () => is_drawing = false)
-    canvas.addEventListener("touchend", () => is_drawing = false)
+
+    canvas.addEventListener("mouseup", () => {
+      drawing.isDrawing = false
+      pathsry.push(points)
+    })
+    canvas.addEventListener("mouseout", () => {
+      drawing.isDrawing = false
+    })
+    canvas.addEventListener("touchend", () => {
+      drawing.isDrawing = false
+    })
   }
 
 
   function start(event) {
     if (ctx) {
-      is_drawing = true;
+      drawing.isDrawing = true;
       ctx.beginPath();
-      ctx.lineWidth = drawWidth;
-      ctx.strokeStyle = drawColor;
-      ctx.fillStyle = drawColor;
+      ctx.lineWidth = drawing.width;
+      ctx.strokeStyle = drawing.color;
+      ctx.fillStyle = drawing.color;
       ctx.lineCap = "round"
       ctx.lineCap = "round"
       ctx.lineTo(event.offsetX, event.offsetY);
       ctx.stroke()
+      points = [];
+      points.push({x:event.offsetX, y:event.offsetX})
     }
   }
   
   function draw(event) {
-    if (is_drawing && ctx) {
+    if (drawing.isDrawing && ctx) {
+      points.push({x:event.offsetX, y:event.offsetX})
       ctx.lineTo(event.offsetX, event.offsetY);
       ctx.stroke();
     }
   }
-  
+
   return <canvas ref={canvasRef}></canvas>
 }
 

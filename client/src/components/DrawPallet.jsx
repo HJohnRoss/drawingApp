@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useRef } from "react";
 
-const DrawPallet = () => {
+const DrawPallet = ({ drawing, pathsry, ctx }) => {
+  1
   const palletRef = useRef(null);
 
   const handleMoveable = (Event) => {
@@ -22,20 +24,48 @@ const DrawPallet = () => {
   const buttons = [
     { name: "Undo" },
     { name: "Clear" },
+    { name: "eraser", color: "white" },
     { name: "red", color: "red" },
     { name: "blue", color: "blue" },
     { name: "green", color: "green" },
     { name: "yellow", color: "yellow" }
   ];
 
-  const handleBtn = (btn) => { 
-    if(btn === "Undo") {
-      // need to setup undo button with canvas
-    } else if(btn === "Clear") {
+  const sizes = [
+    2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40, 44, 48, 64, 128
+  ]
+
+  const drawPaths = () => {
+    if(ctx && pathsry.length > 0) {
+      console.log(pathsry)
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+
+      pathsry.forEach(path => {
+        ctx.beginPath()
+        ctx.moveTo(path[0].x, path[0].y)
+        console.log(path)
+        for(let i = 1; i < path.length; i++) {
+
+          ctx.lineTo(path[i].x, path[i].y)
+        }
+        ctx.stroke()
+      })
+    }
+  }
+
+  const handleBtn = (btn) => {
+    if (btn === "Undo") {
+      pathsry.splice(-1,1);
+      drawPaths()
+    } else if (btn === "Clear") {
       // will probably have to setup a better way for state management
     } else {
-      // setting up colors / brushes in future.
+      drawing.color = btn
     }
+  }
+
+  const handleSize = (size) => {
+    drawing.width = size;
   }
 
   return (
@@ -49,16 +79,30 @@ const DrawPallet = () => {
       <div className="drawPallet__stencils">
         {
           buttons.map((btn, i) =>
-            btn.color ?
-              <button key={i} onClick={() => handleBtn(btn.color)} className={btn.color ? "drawPallet--color" : "drawPallet--btn"} style={{ backgroundColor: btn.color, height: '30px', width: '30px' }}></button>
-              :
+            btn.name === "eraser" ?
               <button key={i} onClick={() => handleBtn(btn.name)} className="drawPallet--btn" >{btn.name}</button>
+              :
+              btn.color ?
+                <button key={i} onClick={() => handleBtn(btn.color)} className={"drawPallet--color"} style={{ backgroundColor: btn.color, height: '30px', width: '30px' }}></button>
+                :
+                <button key={i} onClick={() => handleBtn(btn.name)} className="drawPallet--btn" >{btn.name}</button>
           )
         }
-        <input type="color" id="colorPicker"></input>
+        <input type="color" id="colorPicker" onChange={(e) => handleBtn(e.target.value)}></input>
+        <select name="" id="" onChange={(e) => handleSize(e.target.value)}>
+          {
+            sizes.map((size, i) =>
+              size === drawing.width ?
+                <option key={i} value={size} selected>{size}px</option>
+                :
+                <option key={i} value={size}>{size}px</option>
+            )
+          }
+        </select>
       </div>
     </section>
   )
 }
+
 
 export default DrawPallet;
